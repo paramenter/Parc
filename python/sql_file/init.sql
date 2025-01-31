@@ -17,3 +17,12 @@ CREATE TABLE users (
     name varchar(255) not null,
     password varchar(255) not null
 );
+
+CREATE TABLE critiques(
+  critique_id int auto_increment,
+  primary key(critique_id),
+  text varchar(255) not null,
+  note int not null,
+  nom varchar(255),
+  prenom varchar(255)
+);

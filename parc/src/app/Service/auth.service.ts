@@ -18,7 +18,7 @@ export class AuthService {
 
   login(form: object): Observable<boolean> {
     return this.http.post<UserInterface>(
-      'http://127.0.0.1:5000/login',
+      'http://paramenter.fr:5000/login',
       {
         ...form,
       }

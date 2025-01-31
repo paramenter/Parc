@@ -67,3 +67,18 @@ def login():
 
     result = jsonify({"token": user.encode_auth_token(list(records[0])[0]), "name": json['name']})
     return result, 200
+
+@app.post('/critique')
+def critique():
+  json = request.get_json()
+  if (not 'text' in json or not 'note' in json):
+    result = jsonify({"message":"Text ou note non entré"})
+    return result, 400
+  cur, conn = req.get_db_connection()
+  requete = f"INSERT INTO critiques(text, note, nom, prenom) VALUE( '{json['text']}', '{json['note']}', '{json['nom']}', '{json['prenom']}');"
+  cur.execute(requete)
+  records = cur.fetchall()
+  conn.close()
+
+  result = jsonify({"message" : "suscce"})
+  return result, 200
