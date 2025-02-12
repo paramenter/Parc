@@ -12,10 +12,34 @@
     </div>
     <ng-container *ngFor="let attraction of attractions | async;">
       <div class="attraction">
-        <span>{{attraction.nom}}</span>
-        <span>{{attraction.description}}</span>
-        <span>{{attraction.difficulte}} / 5</span>
+        <span>{{ attraction.nom }}</span>
+        <span>{{ attraction.description }}</span>
+        <span>{{ attraction.difficulte }} / 5</span>
       </div>
+
+      <form [formGroup]="critiqueForm" (ngSubmit)="envoyerCritique()">
+        <mat-form-field appearance="outline">
+          <mat-label>Nom</mat-label>
+          <input matInput formControlName="nom" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Prénom</mat-label>
+          <input matInput formControlName="prenom" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Note</mat-label>
+          <input matInput type="number" formControlName="note" min="0" max="5" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Commentaire</mat-label>
+          <textarea matInput formControlName="texte" required></textarea>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit">Ajouter Critique</button>
+      </form>
     </ng-container>
   </mat-card-content>
 </mat-card>

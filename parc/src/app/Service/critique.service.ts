@@ -18,12 +18,16 @@ export class CritiqueService {
   redirectUrl: string | null = null;
 
   critique(form: object): void {
-    this.http.post<MessageInterface>(
-      'http://paramenter.fr:5000/critique',
-      {
-        ...form,
-      }
-    );
+    this.http.post<MessageInterface>('http://paramenter.fr:5000/critique', form)
+      .subscribe({
+        next: (response) => {
+          console.log('Critique envoyée avec succès :', response);
+        },
+        error: (error) => {
+          console.error('Erreur lors de l’envoi de la critique :', error);
+        }
+      });
   }
+
 
 }
