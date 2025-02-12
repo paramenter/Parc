@@ -1,29 +1,16 @@
-import { Injectable, inject } from '@angular/core';
-import { UserInterface } from '../Interface/user.interface';
-import { Observable, map } from 'rxjs';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { MessageInterface } from '../Interface/message.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CritiqueService {
+  constructor(private http: HttpClient) {}
 
-  http = inject(HttpClient);
-
-  isLoggedIn = false;
-  user: UserInterface|null = null;
-
-  // store the URL so we can redirect after logging in
-  redirectUrl: string | null = null;
-
-  critique(form: object): void {
-    this.http.post<MessageInterface>(
-      'http://paramenter.fr:5000/critique',
-      {
-        ...form,
-      }
-    );
+  critique(form: object): Observable<MessageInterface> {
+    return this.http.post<MessageInterface>('http://paramenter.fr:5000/critique', form);
   }
-
 }
+

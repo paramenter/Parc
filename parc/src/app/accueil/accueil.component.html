@@ -16,6 +16,25 @@
         <span>{{attraction.description}}</span>
         <span>{{attraction.difficulte}} / 5</span>
       </div>
+
+      <form (submit)="soumettreCritique(attraction)">
+        <label>Nom :</label>
+        <input type="text" name="nom" [(ngModel)]="critiqueForm.nom">
+
+        <label>Prénom :</label>
+        <input type="text" name="prenom" [(ngModel)]="critiqueForm.prenom">
+
+        <label>Note :</label>
+        <input type="number" name="note" [(ngModel)]="critiqueForm.note" min="1" max="5" required>
+
+        <label>Critique :</label>
+        <textarea name="text" [(ngModel)]="critiqueForm.text" required></textarea>
+
+        <button type="submit">Envoyer la critique</button>
+      </form>
+
     </ng-container>
+
+
   </mat-card-content>
 </mat-card>
