@@ -1,7 +1,7 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request  # Flask's request module
 from flask_cors import CORS
 
-import request.request as req
+import request.request as req  # Import your custom 'request' module with alias 'req'
 import controller.auth.auth as user
 import controller.attraction as attraction
 
@@ -68,6 +68,18 @@ def login():
     result = jsonify({"token": user.encode_auth_token(list(records[0])[0]), "name": json['name']})
     return result, 200
 
+@app.get('/critique')
+def get_critique():
+    attraction_id = request.args.get('attraction_id')  # Corrected to use Flask's request object
+    if attraction_id:
+        # Sélectionne uniquement les critiques correspondant à l'attraction spécifiée
+        sql = "SELECT * FROM critiques WHERE attraction_id = %s"
+        json = req.select_from_db(sql, (attraction_id,))  # Use 'req' for database query
+    else:
+        # Si aucun ID n'est spécifié, récupère toutes les critiques
+        sql = "SELECT * FROM critiques"
+        json = req.select_from_db(sql)  # Use 'req' for database query
+    return json, 200
 
 @app.post('/critique')
 def critique():
@@ -96,4 +108,3 @@ def critique():
         # Enregistrement de l'erreur et réponse avec message détaillé
         print(f"Erreur lors de l'insertion dans la base de données : {str(e)}")
         return jsonify({"message": "Erreur interne lors de l'ajout de la critique"}), 500
-

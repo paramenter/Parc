@@ -1,40 +1,65 @@
-<mat-card>
+<mat-card class="attraction-card">
   <mat-card-header>
     <mat-card-title>Bienvenue sur le site internet du parc d'attraction</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div class="attraction-title">
-      <div class="attraction">
-        <span>Nom de l'attraction</span>
-        <span>Description de l'attraction</span>
-        <span>Difficulté de l'attraction / 5</span>
-      </div>
-    </div>
     <ng-container *ngFor="let attraction of attractions | async;">
-      <div class="attraction">
-        <span>{{attraction.nom}}</span>
-        <span>{{attraction.description}}</span>
-        <span>{{attraction.difficulte}} / 5</span>
-      </div>
+      <mat-card class="attraction-item">
+        <mat-card-header>
+          <mat-card-title class="attraction-title">{{ attraction.nom }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="attraction-details">
+            <p class="attraction-description">{{ attraction.description }}</p>
+            <p class="attraction-difficulty">Difficulté : {{ attraction.difficulte }} / 5</p>
+          </div>
 
-      <form (submit)="soumettreCritique(attraction)">
-        <label>Nom :</label>
-        <input type="text" name="nom" [(ngModel)]="critiqueForm.nom">
+          <!-- Formulaire de critique -->
+          <div class="critique-section">
+            <h3>Critiques :</h3>
+            <div *ngFor="let critique of critiques">
+              <p><strong>{{ critique.nom }} {{ critique.prenom }}</strong> - {{ critique.note }}/5</p>
+              <p>{{ critique.text }}</p>
+            </div>
+          </div>
 
-        <label>Prénom :</label>
-        <input type="text" name="prenom" [(ngModel)]="critiqueForm.prenom">
+          <!-- Formulaire de soumission de critique -->
+          <div class="critique-form-container">
+            <form (submit)="soumettreCritique()">
+              <mat-form-field>
+                <label for="attraction">Choisissez l'attraction :</label>
+                <mat-select [(ngModel)]="critiqueForm.attraction_id" required>
+                  <mat-option *ngFor="let attraction of attractions | async" [value]="attraction.attraction_id">
+                    {{ attraction.nom }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
 
-        <label>Note :</label>
-        <input type="number" name="note" [(ngModel)]="critiqueForm.note" min="1" max="5" required>
+              <mat-form-field>
+                <label for="nom">Nom :</label>
+                <input matInput type="text" name="nom" [(ngModel)]="critiqueForm.nom" placeholder="Votre nom" required>
+              </mat-form-field>
 
-        <label>Critique :</label>
-        <textarea name="text" [(ngModel)]="critiqueForm.text" required></textarea>
+              <mat-form-field>
+                <label for="prenom">Prénom :</label>
+                <input matInput type="text" name="prenom" [(ngModel)]="critiqueForm.prenom" placeholder="Votre prénom" required>
+              </mat-form-field>
 
-        <button type="submit">Envoyer la critique</button>
-      </form>
+              <mat-form-field>
+                <label for="note">Note :</label>
+                <input matInput type="number" name="note" [(ngModel)]="critiqueForm.note" min="1" max="5" required>
+              </mat-form-field>
 
+              <mat-form-field>
+                <label for="text">Critique :</label>
+                <textarea matInput name="text" [(ngModel)]="critiqueForm.text" placeholder="Écrivez votre critique ici" required></textarea>
+              </mat-form-field>
+
+              <button mat-raised-button type="submit">Envoyer la critique</button>
+            </form>
+          </div>
+        </mat-card-content>
+      </mat-card>
     </ng-container>
-
-
   </mat-card-content>
 </mat-card>
